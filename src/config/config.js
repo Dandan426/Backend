@@ -1,8 +1,8 @@
 
-import { Sequelize } from "sequelize";
+const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize(
-    "sesi-rest", // Nome do banco
+    "user_db", // Nome do banco
     "root", // Usuario do banco
     "root", // Senha do banco
     {

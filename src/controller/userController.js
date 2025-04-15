@@ -1,118 +1,87 @@
-
-const User = require("../model/user.js");
-
+const User = require("../model/user");
+ 
 const userController = {
-    create: async (request, reponse) => {
+    create: async (req, res) => {
         try {
-            const { nome, email, senha } = request.body;
-
-            const userCriado = await User.create({ nome, email, senha });
-
-            return response.status(200).json({
-                msg: "O User foi criado com sucesso",
-                userCriado
-            })
-        } catch (error) {
-            return response.status(500).json({
-                msg: "Ocorreu um erro ao acessar a API"
-            })
-        }
-    },
-    update: async (request, reponse) => {
-        try {
-            const { id } = request.params;
-            const { nome, email, senha } = request.body;
-
+            const { nome, email, senha } = req.body;
+ 
             if (!nome || !email || !senha) {
-                return response.status(400).json({
-                    msg: "Campos faltando"
-                });
+                return res.status(400).json({
+                    msg: "Faltou enviar os campos"
+                })  
             }
-
-            const userExiste = await User.finByPk(id);
-
-            if (!userExiste) {
-                return response.status(400).json({
-                    msg: "User não encontrado"
-                });
+ 
+        User.create = await User.finByPk({ nome, email, senha })
+ 
+ 
+            return res.status(201).json({
+                msg: "User criado com sucesso"
+            })
+ 
+ 
+        } catch (error) {
+            return res.status(500).json({
+                msg: "Deu um erro no sistema"
+            })
+        }
+    },
+    delete: async (req, res) => {
+        try {
+            const { id } = req.params;
+ 
+            if (!id) {
+                return res.status(400).json({
+                    msg:"Pendente o id"
+                })
             }
-
-            await User.update({
-                nome, email, senha
-            }, {
-                where: {
-                    id: id
-                }
-            });
-            
-            return response.status(200).json({
+ 
+            // Deletar o User
+           
+        } catch (error) {
+           return res.status(500).json({
+            msg: "Ocorreu um erro ao criar o User"
+           })
+        }
+    },
+    update: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { nome, email, senha } = req.body;
+ 
+            if (!id || !nome || !email || !senha) {
+                return res.status(400).json({
+                    msg: "Pendente campos"
+                })
+            }
+ 
+            // Atualizar User...
+ 
+            return res.status(200).json({
                 msg: "User atualizado com sucesso"
-            });
-
+            })
         } catch (error) {
-            return response.status(500).json({
-                msg: "Ocorreu um erro ao atualizar o User"
+            return res.status(500).json({
+                msg: "Ocorreu um erro interno"
             })
         }
     },
-    findAll: async (request, reponse) => {
+    getAll: async (req, res) => {
         try {
-            const user = await User.findAll();
-
-            return response.status(200).json(users);
-        } catch (error) {
-            return response.status(500).json({
-                msg: "Ocorreu um erro interno ao buscar todos os users"
+            // Busca dos User
+ 
+            return res.status(200).json({
+                msg: "User encontrados",
+                users: []
             })
-        }
-    },
-    delete: async (request, reponse) => {
-        try {
-            const { id } = request.params;
-
-            const existeUser = await User.finByPk(id);
-
-            if (!existeUser) {
-                return response.status(400).json({
-                    msg:"User não foi encontrado"
-                });
-            }
-
-            await User.detroy({
-                where: {
-                    id: id
-                }
-            });
-
-            return response.status(200).json({
-                msg: "User deletado com sucesso"
-            });
-
+           
         } catch (error) {
-            return response.status(500).json({
-                msg: "Ocorreu um erro interno ao deletar o user"
+            return res.status(500).json({
+                msg: "Ocorreu um erro interno"
             })
-        }
-    },
-    finByPk: async (request, reponse) => {
-        try {
-            const { id } = request.params;
-
-            const userEncontrado = await User.finByPk(id);
-
-            if (!userEncontrado) {
-                return response.status(204).json({
-                    msg: "User não encontrado"
-                });
-            }
-
-            return response.status(200).json(userEncontrado);
-        } catch (error) {
-            return response.status(500).json({
-                msg: "Ocorreu um erro interno ao buscar o user unico"
-            });
+           
         }
     }
 }
-
+ 
 module.exports = userController;
+ 
