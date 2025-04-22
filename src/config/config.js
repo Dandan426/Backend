@@ -4,7 +4,7 @@ const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize(
     "user_db", // Nome do banco
     "root", // Usuario do banco
-    "root", // Senha do banco
+    "admin", // Senha do banco
     {
         host: "localhost", // Host do banco
         port: 3306, // MySQL

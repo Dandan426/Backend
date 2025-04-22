@@ -68,10 +68,11 @@ const userController = {
     getAll: async (req, res) => {
         try {
             // Busca dos User
+            const users = await User.findAll()
  
             return res.status(200).json({
                 msg: "User encontrados",
-                users: []
+                users
             })
            
         } catch (error) {
