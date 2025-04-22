@@ -5,9 +5,9 @@ const userController = require("../controller/userController");
 
 const User = sequelize.define('User', {
     id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        primaryKey: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
 
     nome: {

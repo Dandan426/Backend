@@ -11,7 +11,7 @@ const userController = {
                 })  
             }
  
-        User.create = await User.finByPk({ nome, email, senha })
+        await User.create({ nome, email, senha })
  
  
             return res.status(201).json({
@@ -20,6 +20,7 @@ const userController = {
  
  
         } catch (error) {
+            console.log(error)
             return res.status(500).json({
                 msg: "Deu um erro no sistema"
             })
@@ -36,6 +37,11 @@ const userController = {
             }
  
             // Deletar o User
+            const userDeletado = await User.destroy({
+                where: {
+                    id
+                }
+            })
            
         } catch (error) {
            return res.status(500).json({
@@ -55,6 +61,15 @@ const userController = {
             }
  
             // Atualizar User...
+            const userAtualizado = await User.update({
+                nome,
+                email,
+                senha
+            }, {
+                where: {
+                    id
+                }
+            })
  
             return res.status(200).json({
                 msg: "User atualizado com sucesso"
