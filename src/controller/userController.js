@@ -1,6 +1,20 @@
 const User = require("../model/user");
+
+const bcrypt = require("bcrypt"); // Importar o bcrypt
  
 const userController = {
+    login: async (req, res) => {
+        const { email, senha } = req.body;
+
+        if (!email || !senha) {
+            return res.status(400).json({
+                msg: "Campos inválidos"
+            });
+        }
+
+        
+    },
+
     create: async (req, res) => {
         try {
             const { nome, email, senha } = req.body;
@@ -10,8 +24,12 @@ const userController = {
                     msg: "Faltou enviar os campos"
                 })  
             }
- 
-        await User.create({ nome, email, senha })
+
+            // Senha criptografada
+            const hashedSenha = await bcrypt.hash(senha, 10);
+            
+            // Salvar a senha criptografada
+            await User.create({ nome, email, senha: hashedSenha })
  
  
             return res.status(201).json({
