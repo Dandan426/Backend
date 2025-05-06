@@ -1,6 +1,9 @@
 const User = require("../model/user");
 
 const bcrypt = require("bcrypt"); // Importar o bcrypt
+
+// JWT -> Token Aplicação
+const jwt = require("jsonwebtoken"); // Importar o JWT
  
 const userController = {
     login: async (req, res) => {
@@ -32,6 +35,27 @@ const userController = {
                 msg: "E-mail ou Senha incorreta"
             })
         }
+
+        // payload -> Conteúdo de dentro do JWT
+        // somente o necessário para a aplicação
+        const payload = {
+            id: userEncontrado.id,
+            email: userEncontrado.email,
+        }
+
+        // token vai sobreviver por 1h
+        // palavra secreta -> letty
+        // dsad9d81nx78nsasyad0n1n7x1b10dxn98s
+
+        // petermarcoaurelio -> base64
+        const token = jwt.sign(payload, "palavra-secreta", {
+            expiresIn: "1h"
+        });
+
+        return res.status(200).json({
+            token,
+            msg: "Usuario autenticado com sucesso!"
+        });
         
     },
 
