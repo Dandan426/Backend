@@ -12,6 +12,26 @@ const userController = {
             });
         }
 
+        // SELECT * FROM User WHERE email = email;
+        const userEncontrado = await User.findAll({
+            where: {
+                email
+            }
+        })
+
+        if (!userEncontrado) {
+            return res.status(403).json({
+                msg: "E-mail ou Senha incorretos"
+            })
+        }
+
+        const isCerto = await bcrypt.compare(senha, userEncontrado.senha)
+
+        if (!isCerto) {
+            return res.status(401).json({
+                msg: "E-mail ou Senha incorreta"
+            })
+        }
         
     },
 
@@ -26,7 +46,7 @@ const userController = {
             }
 
             // Senha criptografada
-            const hashedSenha = await bcrypt.hash(senha, 10);
+            const hashedSenha = await bcrypt.hash(senha, 10)
             
             // Salvar a senha criptografada
             await User.create({ nome, email, senha: hashedSenha })
